@@ -1,0 +1,9 @@
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$moto-academy-web/node-cloud-sql:$COMMIT_SHA', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$moto-academy-web/node-cloud-sql:$COMMIT_SHA']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'node-cloud-sql', '--image', 'gcr.io/$moto-academy-web/node-cloud-sql:$COMMIT_SHA', '--platform', 'managed', '--region', 'us-central1']
